@@ -16,23 +16,28 @@ describe('SiteInfo', function(){
   });
 
   describe('#get_page', function(){
-    it('should call the error callback if the url is blank or null', function(){
-      var cb = sinon.spy();
 
-      var result = so('', cb, function(){} );
-
-      expect( cb.called ).toBe(true);
+    before(function(done){
+      server.listen(3070, done);
     });
 
-    it('should call the error call back if the page does not exist', function(){
+    after(function(){
+      server.close();
+    });
 
-      var result = so('http://www.google.com/jhkskjsdf', function(e){
-        expect( false ).toBe(true);
-      }, function(d){
-        console.log("SUCC!");
-        console.log(d);
-      });
-      
+    it('should call the error callback if the url is blank or null', function(){
+      var err_cb = sinon.spy();
+      var result = so('', err_cb, function(){} );
+      expect( err_cb.called ).toBe(true);
+    });
+
+    it('should call the error call back if the page does not exist', function(done){
+      var err_cb = sinon.spy();
+      var result = so('http://www.google.com/jhkkjhdfg', function(e){
+        expect( true ).toBe(true);
+        expect(e).toBeA('object');
+        done();
+      }, function(){} );
     });
   });
 });
