@@ -1,0 +1,19 @@
+{
+  "name": "siteinfo",
+  "version": "0.0.1",
+  "description": "A tool for grabbing info about a particular URL",
+  "main": "siteinfo.js",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "Eric Willis",
+  "license": "MIT",
+  "dependencies": {
+    "cheerio": "^0.18.0"
+  },
+  "devDependencies": {
+    "expect": "^1.3.0",
+    "mocha": "^2.1.0",
+    "sinon": "^1.12.2"
+  }
+}
