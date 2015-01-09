@@ -32,12 +32,38 @@ describe('SiteInfo', function(){
     });
 
     it('should call the error call back if the page does not exist', function(done){
-      var err_cb = sinon.spy();
-      var result = so('http://www.google.com/jhkkjhdfg', function(e){
+      var result = so('http://localhost:3070/jhkkjhdfg', function(e){
         expect( true ).toBe(true);
         expect(e).toBeA('object');
         done();
-      }, function(){} );
+      }, function(){
+        expect( false ).toBe(true);
+        done();
+      } );
     });
+
+    it('should call the success callback for a page that does exist', function(done){
+      var result = so('http://localhost:3070', function(e){
+        throw(e);
+        done();
+      }, function(d){
+        expect(d).toBeA('object');
+        done();
+      });
+    });
+
+    it('should have the correct keys in the return data object', function(done){
+      var result = so('http://localhost:3070', function(e){
+        throw(e);
+        done();
+      }, function(d){
+        expect(d).toBeA('object');
+        keys = Object.keys(d);
+        expect(keys).toEqual(["page_title", "description", "description_source", "presumed_favicon","favicon","main_image","images"]);
+      
+        done();
+      });
+    });
+
   });
 });
