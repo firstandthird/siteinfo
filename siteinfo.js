@@ -1,32 +1,33 @@
 
-$http = require('http');
+//$http = require('http');
 $url = require('url');
+$request = require('request');
 ch = require('cheerio');
 
 
-var HTMLPage = function()
-{
-  var _this = {
-    'document_body' : ''
-  };
+// var HTMLPage = function()
+// {
+//   var _this = {
+//     'document_body' : ''
+//   };
 
-  _this.addToBody = function(str)
-  {
-    _this.document_body += str;
-  }
+//   _this.addToBody = function(str)
+//   {
+//     _this.document_body += str;
+//   }
 
-  _this.body = function(){
-    return _this.document_body;
-  }
+//   _this.body = function(){
+//     return _this.document_body;
+//   }
 
-  return _this;
-}
+//   return _this;
+// }
 
 function SiteInfo(url, err, cb){
 
   var _this = {};
 
-  function _init(url, err, cb)
+  function init(url, err, cb)
   {
     _this.url_object = {};
 
@@ -35,9 +36,10 @@ function SiteInfo(url, err, cb){
       _this.url_object = $url.parse(url);
     }
     
+    _this.url = url;
     _this.err_cb = err;
     _this.cb = cb;
-    _this.html_page = HTMLPage();
+    // _this.html_page = HTMLPage();
 
     // DO the action:
     _go();
@@ -50,10 +52,10 @@ function SiteInfo(url, err, cb){
     var req = get_site(_this.url_object);
   }
 
-  function process_data(chunk)
-  {
-    _this.html_page.addToBody( chunk.toString() );
-  }
+  // function process_data(chunk)
+  // {
+  //   _this.html_page.addToBody( chunk.toString() );
+  // }
 
   function abs_path(path)
   {
@@ -66,15 +68,16 @@ function SiteInfo(url, err, cb){
     return url_str + path.replace( url_str + "" );
   }
 
-  function find_data()
+  function find_data(documentBody)
   {
     // Check to see if there is data
 
-    if( _this.html_page.body() === '')
+    if( documentBody === '')
     {
       _this.err_cb({ 'message' : 'The document is empty'})
     }
-    $ = ch.load( _this.html_page.body() );
+
+    $ = ch.load( documentBody );
 
     var data = {
       'page_title'          : null,
@@ -136,30 +139,42 @@ function SiteInfo(url, err, cb){
 
   function get_site(url)
   {
-    var _options = url;
+    // var _options = url;
 
-    if( _options.host === undefined )
-    {
-      _this.err_cb({ 'message' : 'Site URL can not be blank'});
-      return false;
-    }
+    // if( _options.host === undefined )
+    // {
+    //   _this.err_cb({ 'message' : 'Site URL can not be blank'});
+    //   return false;
+    // }
 
-    return $http.get(_options, function(res){
-      // Checking for any errors.
-      if( res.statusCode == '200')
-      {
-        res.on("data", process_data);
-        res.on("end", find_data);
+    // return $http.get(_options, function(res){
+    //   // Checking for any errors.
+    //   if( res.statusCode == '200')
+    //   {
+    //     res.on("data", process_data);
+    //     res.on("end", find_data);
+    //   } else {
+    //     // Send the error callback
+    //     _this.err_cb( { 'message' : "There was an error retrieving the url StatusCode: " + res.statusCode } );
+    //   }
+    // }).on("error", function(e){
+    //   _this.err_cb(e);
+    // });
+
+    $request(_this.url, function(error, response, body){
+      if (!error && response.statusCode == 200) {
+        find_data(body);
       } else {
         // Send the error callback
-        _this.err_cb( { 'message' : "There was an error retrieving the url StatusCode: " + res.statusCode } );
+        _this.err_cb( { 'message' : "There was an error retrieving the url StatusCode: " + response.statusCode } );
       }
-    }).on("error", function(e){
-      _this.err_cb(e);
     });
+    // .on("error", function(e){
+    //   _this.err_cb(e);
+    // });
   }
 
-  return _init(url, err, cb);
+  return init(url, err, cb);
 
 }
 
