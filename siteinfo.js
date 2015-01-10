@@ -25,7 +25,7 @@ function SiteInfo(url, err, cb){
     return _this;
   }
 
-  function abs_path(path)
+  function absPath(path)
   {
     url_str = _this.url_object.protocol + "://" + _this.url_object.hostname;
     if( _this.url_object.pathname != '/')
@@ -36,7 +36,7 @@ function SiteInfo(url, err, cb){
     return url_str + path.replace( url_str + "" );
   }
 
-  function find_data(documentBody)
+  function findData(documentBody)
   {
     // Check to see if there is data
 
@@ -51,7 +51,7 @@ function SiteInfo(url, err, cb){
       'page_title'          : null,
       'description'         : null,
       'description_source'  : null,
-      'presumed_favicon'    : abs_path('/favicon.ico'),
+      'presumed_favicon'    : absPath('/favicon.ico'),
       'favicon'             : null,
       'main_image'          : null,
       'images'              : []
@@ -75,7 +75,7 @@ function SiteInfo(url, err, cb){
 
     if( $('link[rel="shortcut icon"]').length > 0)
     {
-      data.favicon = abs_path($('link[rel="shortcut icon"]').attr('href'));
+      data.favicon = absPath($('link[rel="shortcut icon"]').attr('href'));
     }
 
     // Load all the images.
@@ -90,14 +90,14 @@ function SiteInfo(url, err, cb){
       var first_image = images.get(0);
       if( first_image !== undefined )
       {
-        data.main_image = abs_path( $(first_image).attr('src') );
+        data.main_image = absPath( $(first_image).attr('src') );
       }
     }
 
     images.each(function(i){
       if($(this).attr('src') !== '')
       {
-        data.images.push(abs_path( $(this).attr('src') ));
+        data.images.push(absPath( $(this).attr('src') ));
       }
     });
 
@@ -115,7 +115,7 @@ function SiteInfo(url, err, cb){
 
     $request(_this.url, function(error, response, body){
       if (!error && response.statusCode == 200) {
-        find_data(body);
+        findData(body);
       } else {
         // Send the error callback
         _this.err_cb( { 'message' : "There was an error retrieving the url" } );
