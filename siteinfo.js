@@ -1,7 +1,7 @@
 
-$url = require('url');
-$request = require('request');
-ch = require('cheerio');
+var $url = require('url'),
+$request = require('request'),
+$ch = require('cheerio');
 
 function SiteInfo(url, err, cb){
 
@@ -45,22 +45,22 @@ function SiteInfo(url, err, cb){
       _this.err_cb({ 'message' : 'The document is empty'})
     }
 
-    $ = ch.load( documentBody );
+    $ = $ch.load( documentBody );
 
     var data = {
-      'page_title'          : null,
+      'pageTitle'          : null,
       'description'         : null,
-      'description_source'  : null,
-      'presumed_favicon'    : absPath('/favicon.ico'),
+      'descriptionSource'  : null,
+      'presumedFavicon'    : absPath('/favicon.ico'),
       'favicon'             : null,
-      'main_image'          : null,
+      'mainImage'          : null,
       'images'              : []
     };
 
     // Find the page title
     if($('title').text() != '')
     {
-      data.page_title = $('title').text();
+      data.pageTitle = $('title').text();
     }
 
     // First, og:description
@@ -70,7 +70,7 @@ function SiteInfo(url, err, cb){
       data.description_source = 'og:description';
     } else if($('meta[property="description"]').length > 0) {
       data.description = $('meta[property="description"]').attr('content');
-      data.description_source = 'description';
+      data.descriptionSource = 'description';
     }
 
     if( $('link[rel="shortcut icon"]').length > 0)
@@ -84,13 +84,13 @@ function SiteInfo(url, err, cb){
     // Next, og:image
     if($('meta[property="og:image"]').length > 0)
     {
-      data.main_image = $('meta[property="og:image"]').attr('content');
+      data.mainImage = $('meta[property="og:image"]').attr('content');
     } else {
       // Now where are we going to find an image?
-      var first_image = images.get(0);
-      if( first_image !== undefined )
+      var firstImage = images.get(0);
+      if( firstImage !== undefined )
       {
-        data.main_image = absPath( $(first_image).attr('src') );
+        data.mainImage = absPath( $(firstImage).attr('src') );
       }
     }
 

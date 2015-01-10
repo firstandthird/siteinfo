@@ -59,7 +59,7 @@ describe('SiteInfo', function(){
       }, function(d){
         expect(d).toBeA('object');
         keys = Object.keys(d);
-        expect(keys).toEqual(["page_title", "description", "description_source", "presumed_favicon","favicon","main_image","images"]);
+        expect(keys).toEqual(["pageTitle", "description", "descriptionSource", "presumedFavicon","favicon","mainImage","images"]);
       
         done();
       });
