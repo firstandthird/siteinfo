@@ -1,27 +1,7 @@
 
-//$http = require('http');
 $url = require('url');
 $request = require('request');
 ch = require('cheerio');
-
-
-// var HTMLPage = function()
-// {
-//   var _this = {
-//     'document_body' : ''
-//   };
-
-//   _this.addToBody = function(str)
-//   {
-//     _this.document_body += str;
-//   }
-
-//   _this.body = function(){
-//     return _this.document_body;
-//   }
-
-//   return _this;
-// }
 
 function SiteInfo(url, err, cb){
 
@@ -39,23 +19,11 @@ function SiteInfo(url, err, cb){
     _this.url = url;
     _this.err_cb = err;
     _this.cb = cb;
-    // _this.html_page = HTMLPage();
 
-    // DO the action:
-    _go();
+    getSite(url);
 
     return _this;
   }
-
-  function _go()
-  {
-    var req = get_site(_this.url_object);
-  }
-
-  // function process_data(chunk)
-  // {
-  //   _this.html_page.addToBody( chunk.toString() );
-  // }
 
   function abs_path(path)
   {
@@ -137,41 +105,22 @@ function SiteInfo(url, err, cb){
 
   }
 
-  function get_site(url)
+  function getSite(url)
   {
-    // var _options = url;
-
-    // if( _options.host === undefined )
-    // {
-    //   _this.err_cb({ 'message' : 'Site URL can not be blank'});
-    //   return false;
-    // }
-
-    // return $http.get(_options, function(res){
-    //   // Checking for any errors.
-    //   if( res.statusCode == '200')
-    //   {
-    //     res.on("data", process_data);
-    //     res.on("end", find_data);
-    //   } else {
-    //     // Send the error callback
-    //     _this.err_cb( { 'message' : "There was an error retrieving the url StatusCode: " + res.statusCode } );
-    //   }
-    // }).on("error", function(e){
-    //   _this.err_cb(e);
-    // });
+    if(url === '')
+    {
+      _this.err_cb({'message' : 'URL Can not be blank.'});
+      return;
+    }
 
     $request(_this.url, function(error, response, body){
       if (!error && response.statusCode == 200) {
         find_data(body);
       } else {
         // Send the error callback
-        _this.err_cb( { 'message' : "There was an error retrieving the url StatusCode: " + response.statusCode } );
+        _this.err_cb( { 'message' : "There was an error retrieving the url" } );
       }
     });
-    // .on("error", function(e){
-    //   _this.err_cb(e);
-    // });
   }
 
   return init(url, err, cb);
