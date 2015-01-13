@@ -19,5 +19,8 @@
     "jscs": "^1.9.0",
     "mocha": "^2.1.0",
     "sinon": "^1.12.2"
+  },
+  "bin": {
+    "siteinfo": "bin/cli.js"
   }
 }
