@@ -4,5 +4,7 @@
 
 Use the module by requiring it into your scope, then sending the url, and the callbacks to the function.
 
-    var si = require('./siteinfo');
-    si('http://www.google.com/', err_cb, cb);
+```javascript
+var si = require('./siteinfo');
+si('http://www.google.com/', err_cb, cb);
+```
