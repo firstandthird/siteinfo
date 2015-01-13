@@ -62,5 +62,19 @@ describe('SiteInfo', function() {
       });
     });
 
+    it('should find the description of the meta tag', function(done){
+      var result = so('http://localhost:3070', function(e, d) {
+        if( e === false)
+        {
+          throw(e);
+          done();
+          return;
+        }
+        
+        expect(d.description).toEqual('This is a meta description.');
+        done();
+      });
+    });
+
   });
 });

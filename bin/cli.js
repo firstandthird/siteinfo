@@ -9,11 +9,14 @@ if (!url) {
 }
 
 siteinfo(url,
-         function(err) {
-           console.log('ERROR');
-           console.log(err);
-         },
-         function(data) {
+         function(err, data) {
+           if(err !== false)
+           {
+             console.log('ERROR');
+             console.log(err);
+             return;
+           }
+
            Object.keys(data).forEach(function(key) {
              var value = data[key];
              if (value instanceof Array) {
@@ -21,5 +24,16 @@ siteinfo(url,
              }
              console.log(key + ': ' + value);
            });
+           
          }
+         // ,
+         // function(data) {
+         //   Object.keys(data).forEach(function(key) {
+         //     var value = data[key];
+         //     if (value instanceof Array) {
+         //       value = value.join('\n');
+         //     }
+         //     console.log(key + ': ' + value);
+         //   });
+         // }
         );
