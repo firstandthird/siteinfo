@@ -11,6 +11,7 @@ describe('SiteInfo', function() {
       var result = so('', function() {}, function() {});
       expect(result).toBeA('object');
       var keys = Object.keys( result );
+      expect(keys).toEqual(["urlObject","url","cb"]);
     });
   });
 
