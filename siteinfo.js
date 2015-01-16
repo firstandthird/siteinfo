@@ -25,13 +25,10 @@ var SiteInfo = function(url, cb) {
     if ( path.indexOf('http://') > -1 || path.indexOf('//') > -1 ) {
       return path;
     }
+    
+    urlHref = self.urlObject.href;
 
-    urlStr = self.urlObject.protocol + '://' + self.urlObject.hostname;
-    if ( self.urlObject.pathname != '/') {
-      urlStr +=  self.urlObject.pathname;
-    }
-
-    return urlStr + path.replace( urlStr );
+    return $url.resolve( urlHref, path );
   }
 
   var findData = function(documentBody) {
