@@ -1,66 +1,94 @@
-var expect = require("expect");
-var sinon = require("sinon");
+var expect = require('expect');
+var sinon = require('sinon');
 
 var server = require('./helpers/test_server.js');
 
 var so = require('../siteinfo');
 
-describe('SiteInfo', function(){
-  describe('#()',function(){
-    
-    it('should return an object upon instantiation', function(){
-      var result = so('', function(){}, function(){});
+describe('SiteInfo', function() {
+  describe('#()', function() {
+    it('should return an object upon instantiation', function() {
+      var result = so('', function() {}, function() {});
       expect(result).toBeA('object');
       var keys = Object.keys( result );
     });
   });
 
-  describe('#get_page', function(){
-
-    before(function(done){
+  describe('#get_page', function() {
+    before(function(done) {
       server.listen(3070, done);
     });
 
-    after(function(){
+    after(function() {
       server.close();
     });
 
-    it('should call the error callback if the url is blank or null', function(){
-      var err_cb = sinon.spy();
-      var result = so('', err_cb, function(){} );
-      expect( err_cb.called ).toBe(true);
+    it('should call the error callback if the url is blank or null', function() {
+      var errCb = sinon.spy();
+      var result = so('', errCb );
+      expect( errCb.called ).toBe(true);
     });
 
-    it('should call the error call back if the page does not exist', function(done){
-      var result = so('http://localhost:3070/jhkkjhdfg', function(e){
-        expect( true ).toBe(true);
+    it('should set the err argument to an error object message if the page does not exist', function(done) {
+      var result = so('http://localhost:3070/jhkkjhdfg', function(e, d) {
+        expect( d ).toBe(false);
         expect(e).toBeA('object');
-        done();
-      }, function(){
-        expect( false ).toBe(true);
-        done();
-      } );
-    });
-
-    it('should call the success callback for a page that does exist', function(done){
-      var result = so('http://localhost:3070', function(e){
-        throw(e);
-        done();
-      }, function(d){
-        expect(d).toBeA('object');
         done();
       });
     });
 
-    it('should have the correct keys in the return data object', function(done){
-      var result = so('http://localhost:3070', function(e){
-        throw(e);
+    it('should set err to false if the page exists.', function(done) {
+      var result = so('http://localhost:3070', function(e, d) {
+        if(e !== false)
+        {
+          throw(e);
+          done();
+        }
+
+        expect(e).toBe(false);
         done();
-      }, function(d){
+      });
+    });
+
+    it('should have the correct keys in the return data object', function(done) {
+      var result = so('http://localhost:3070', function(e, d) {
         expect(d).toBeA('object');
         keys = Object.keys(d);
-        expect(keys).toEqual(["page_title", "description", "description_source", "presumed_favicon","favicon","main_image","images"]);
-      
+        expect(keys).toEqual(['pageTitle', 'description', 'descriptionSource', 'presumedFavicon', 'favicon', 'mainImage', 'images']);
+        done();
+      });
+    });
+
+    it('should find the description of the meta tag', function(done){
+      var result = so('http://localhost:3070', function(e, d) {
+        if( e !== false)
+        {
+          throw(e);
+          done();
+        }
+        
+        expect(d.description).toEqual('This is a meta description.');
+        done();
+      });
+    });
+
+    it('should prefix images with the correct TLD URL', function(done) {
+      var result = so('http://localhost:3070/subfolder/test_2.html', function(e, d) {
+        if( e !== false)
+        {
+          throw(e);
+          done();
+          return;
+        }
+
+        tldImage = d.images[0];
+        expect( tldImage ).toMatch(/http:\/\/cdn\.example\.com\/images\/thugsaretripping\.jpg/);
+
+        nonTLDImage = d.images[1];
+        expect( nonTLDImage ).toMatch(/http:\/\/localhost:3070\/images\/thugsaretripping\.jpg/);
+
+        subFolderImage = d.images[2];
+        expect( subFolderImage ).toMatch(/http:\/\/localhost:3070\/subfolder\/sub-images\/thugsaretripping\.jpg/);
         done();
       });
     });
