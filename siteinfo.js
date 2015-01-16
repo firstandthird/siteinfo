@@ -25,7 +25,6 @@ var SiteInfo = function(url, cb) {
     if ( path.indexOf('http://') > -1 || path.indexOf('//') > -1 ) {
       return path;
     }
-    
     urlHref = self.urlObject.href;
 
     return $url.resolve( urlHref, path );
