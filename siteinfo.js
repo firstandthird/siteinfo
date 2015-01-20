@@ -54,7 +54,7 @@ var SiteInfo = function(url, cb) {
   }
 
   var getVimeoInfo = function(vimeoId, data) {
-    $request({url: 'http://vimeo.com/api/v2/video/' + vimeoId + '.json', json: true }, function(error, response, body) {
+    $request({ url: 'http://vimeo.com/api/v2/video/' + vimeoId + '.json', json: true }, function(error, response, body) {
       if (!error && response.statusCode == 200) {
         var responseObj = body[0];
         data.vimeoThumbnails = {};

@@ -10,7 +10,7 @@ if (!url) {
 
 siteinfo(url,
          function(err, data) {
-           if(err !== false)
+           if(err !== null)
            {
              console.log('ERROR');
              console.log(err);
