@@ -72,7 +72,7 @@ var SiteInfo = function(url, cb) {
 
       }
 
-      self.cb( false, data );
+      self.cb( null, data );
     });
   };
 
