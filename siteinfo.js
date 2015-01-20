@@ -40,6 +40,7 @@ var SiteInfo = function(url, cb) {
       for (i = 0; i < 4; i++) {
         data.youtubeThumbnails.push('http://img.youtube.com/vi/' + videoId + '/' + i + '.jpg');
       }
+      data.embedCode =  '<iframe width="420" height="315" src="//www.youtube.com/embed/' + videoId + '" frameborder="0" allowfullscreen></iframe>';
     }
   }
 
