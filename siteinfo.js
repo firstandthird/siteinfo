@@ -33,8 +33,8 @@ var SiteInfo = function(url, cb) {
 
   var parseYouTube = function(data) {
     var ytIdRegev = /(?:http|https|)(?::\/\/|)(?:www.|)(?:youtu\.be\/|youtube\.com(?:\/embed\/|\/v\/|\/watch\?v=|\/ytscreeningroom\?v=|\/feeds\/api\/videos\/|\/user\S*[^\w\-\s]|\S*[^\w\-\s]))([\w\-]{11})[a-z0-9;:@#?&%=+\/\$_.-]*/i
-    var result = ytIdRegev.exec(url);
-    if (result !== null) {
+    var result = ytIdRegev.exec(self.url);
+    if (result !== null && result[1] !== undefined) {
       var videoId = result[1];
       data.youtubeThumbnails = [];
       for (i = 0; i < 4; i++) {
@@ -42,6 +42,39 @@ var SiteInfo = function(url, cb) {
       }
     }
   }
+
+  var parseVimeo = function(data) {
+    var vimeoRegex = /https?:\/\/(?:www\.)?vimeo.com\/(?:channels\/(?:\w+\/)?|groups\/([^\/]*)\/videos\/|album\/(\d+)\/video\/|)(\d+)(?:$|\/|[\?#])/
+    var result = vimeoRegex.exec(self.url);
+    if (result !== null && result[3] !== undefined) {
+      return result[3];
+    }
+
+    return null;
+  }
+
+  var getVimeoInfo = function(vimeoId, data) {
+    $request({url: 'http://vimeo.com/api/v2/video/' + vimeoId + '.json', json: true }, function(error, response, body) {
+      if (!error && response.statusCode == 200) {
+        var responseObj = body[0];
+        data.vimeoThumbnails = {};
+        if (responseObj.thumbnail_small !== undefined) {
+          data.vimeoThumbnails.small = responseObj.thumbnail_small;
+        }
+
+        if (responseObj.thumbnail_medium !== undefined) {
+          data.vimeoThumbnails.medium = responseObj.thumbnail_medium;
+        }
+
+        if (responseObj.thumbnail_large !== undefined) {
+          data.vimeoThumbnails.large = responseObj.thumbnail_large;
+        }
+
+      }
+
+      self.cb( false, data );
+    });
+  };
 
   var findData = function(documentBody) {
     // Check to see if there is data
@@ -94,16 +127,20 @@ var SiteInfo = function(url, cb) {
       }
     }
 
-    parseYouTube(data);
-
     images.each(function(i) {
       if ($(this).attr('src') !== '') {
         data.images.push(absPath( $(this).attr('src') ));
       }
     });
 
-    self.cb( false, data );
+    parseYouTube(data);
+    var vimeoId = parseVimeo(data);
 
+    if (vimeoId !== null) {
+      getVimeoInfo(vimeoId, data);
+    } else {
+      self.cb( null, data );
+    }
   }
 
   var getSite = function(url) {

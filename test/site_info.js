@@ -38,15 +38,10 @@ describe('SiteInfo', function() {
       });
     });
 
-    it('should set err to false if the page exists.', function(done) {
+    it('should set err to null if the page exists.', function(done) {
       var result = so('http://localhost:3070', function(e, d) {
-        if(e !== false)
-        {
-          throw(e);
-          done();
-        }
+        expect(e).toBe(null);
 
-        expect(e).toBe(false);
         done();
       });
     });
@@ -62,11 +57,7 @@ describe('SiteInfo', function() {
 
     it('should find the description of the meta tag', function(done){
       var result = so('http://localhost:3070', function(e, d) {
-        if( e !== false)
-        {
-          throw(e);
-          done();
-        }
+        expect(e).toBe(null);
         
         expect(d.description).toEqual('This is a meta description.');
         done();
@@ -75,12 +66,7 @@ describe('SiteInfo', function() {
 
     it('should prefix images with the correct TLD URL', function(done) {
       var result = so('http://localhost:3070/subfolder/test_2.html', function(e, d) {
-        if( e !== false)
-        {
-          throw(e);
-          done();
-          return;
-        }
+        expect(e).toEqual(null);
 
         tldImage = d.images[0];
         expect( tldImage ).toMatch(/http:\/\/cdn\.example\.com\/images\/thugsaretripping\.jpg/);
@@ -95,4 +81,30 @@ describe('SiteInfo', function() {
     });
 
   });
+
+describe("#get_page, video url", function() {
+  it('should parse a youtube url correctly', function(done) {
+    var result = so('https://www.youtube.com/watch?v=dK2b4CbICYo', function(e, d) {
+      expect(e).toEqual(null);
+      expect(d.youtubeThumbnails).toBeA('object');
+      done();
+    });
+  });
+
+  it('should parse a short youtube url correctly', function(done) {
+    var result = so('http://youtu.be/dK2b4CbICYo', function(e, d) {
+      expect(e).toEqual(null);
+      expect(d.youtubeThumbnails).toBeA('object');
+      done();
+    });
+  });
+
+  it('should continue if a url is misformatted', function(done) {
+    var result = so('http://www.youtube.com/watch?v=sijksjdfhfjksdfsdf', function(e, d) {
+      expect(e).toEqual(null);
+      expect(d.youtubeThumbnails).toBeA('object');
+      done();
+    });
+  });
+});
 });
