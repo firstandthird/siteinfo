@@ -71,6 +71,8 @@ var SiteInfo = function(url, cb) {
           data.vimeoThumbnails.large = responseObj.thumbnail_large;
         }
 
+        data.embedCode = '<iframe src="//player.vimeo.com/video/' + vimeoId + '" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
+
       }
 
       self.cb( null, data );
