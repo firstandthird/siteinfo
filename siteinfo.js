@@ -25,9 +25,22 @@ var SiteInfo = function(url, cb) {
     if ( path.indexOf('http://') > -1 || path.indexOf('//') > -1 ) {
       return path;
     }
+
     urlHref = self.urlObject.href;
 
     return $url.resolve( urlHref, path );
+  }
+
+  var parseYouTube = function(data) {
+    var ytIdRegev = /(?:http|https|)(?::\/\/|)(?:www.|)(?:youtu\.be\/|youtube\.com(?:\/embed\/|\/v\/|\/watch\?v=|\/ytscreeningroom\?v=|\/feeds\/api\/videos\/|\/user\S*[^\w\-\s]|\S*[^\w\-\s]))([\w\-]{11})[a-z0-9;:@#?&%=+\/\$_.-]*/i
+    var result = ytIdRegev.exec(url);
+    if (result !== null) {
+      var videoId = result[1];
+      data.youtubeThumbnails = [];
+      for (i = 0; i < 4; i++) {
+        data.youtubeThumbnails.push('http://img.youtube.com/vi/' + videoId + '/' + i + '.jpg');
+      }
+    }
   }
 
   var findData = function(documentBody) {
@@ -80,6 +93,8 @@ var SiteInfo = function(url, cb) {
         data.mainImage = absPath( $(firstImage).attr('src') );
       }
     }
+
+    parseYouTube(data);
 
     images.each(function(i) {
       if ($(this).attr('src') !== '') {
