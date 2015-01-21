@@ -1,6 +1,6 @@
 {
   "name": "siteinfo",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "A tool for grabbing info about a particular URL",
   "main": "siteinfo.js",
   "scripts": {
