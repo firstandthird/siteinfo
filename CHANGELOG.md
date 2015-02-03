@@ -1,4 +1,10 @@
 
+0.1.1 / 2015-02-03
+==================
+
+  * fixing error where images with no defined src attr caused an error
+
+
 0.1.0 / 2015-01-21 
 ==================
 
