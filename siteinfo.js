@@ -131,7 +131,7 @@ var SiteInfo = function(url, cb) {
     }
 
     images.each(function(i) {
-      if ($(this).attr('src') !== '') {
+      if ($(this).attr('src')) {
         data.images.push(absPath( $(this).attr('src') ));
       }
     });
