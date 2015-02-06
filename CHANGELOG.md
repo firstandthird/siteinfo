@@ -1,4 +1,11 @@
 
+0.1.2 / 2015-02-06
+==================
+
+  * Updating errors in one place
+  * fixing sites that wont load without cookies enabled
+
+
 0.1.1 / 2015-02-03
 ==================
 
