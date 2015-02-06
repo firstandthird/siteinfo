@@ -152,12 +152,16 @@ var SiteInfo = function(url, cb) {
       return;
     }
 
-    $request(self.url, function(error, response, body) {
+    var opts = {};
+    opts.url = url;
+    opts.jar = true;
+
+    $request(opts, function(error, response, body) {
       if (!error && response.statusCode == 200) {
         findData(body);
       } else {
         // Send the error callback
-        self.cb( { message: 'There was an error retrieving the url' }, false );
+        self.cb( { message: 'There was an error retrieving the url', response: response }, false );
       }
     });
   }

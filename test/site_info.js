@@ -34,6 +34,8 @@ describe('SiteInfo', function() {
       var result = so('http://localhost:3070/jhkkjhdfg', function(e, d) {
         expect( d ).toBe(false);
         expect(e).toBeA('object');
+        expect(e.response).toBeA('object');
+        expect(e.response.statusCode).toNotBe(200);
         done();
       });
     });
