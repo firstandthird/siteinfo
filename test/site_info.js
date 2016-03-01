@@ -8,12 +8,12 @@ const lab = exports.lab = Lab.script();
 
 const server = require('./helpers/test_server.js');
 
-const SiteInfo = require('../');
+const UrlInfo = require('../');
 
-lab.experiment('SiteInfo', () => {
+lab.experiment('UrlInfo', () => {
   lab.experiment('#()', () => {
     lab.test.skip('should return an object upon instantiation', done => {
-      const result = new SiteInfo({}, () => {});
+      const result = new UrlInfo({}, () => {});
 
       Hoek.assert(typeof result === 'object', 'Returned data not an object');
 
@@ -38,7 +38,7 @@ lab.experiment('SiteInfo', () => {
 
     lab.test('should call the error callback if the url is blank or null', done => {
       const errCb = sinon.spy();
-      const result = new SiteInfo({}, errCb);
+      const result = new UrlInfo({}, errCb);
 
       Hoek.assert(errCb.args[0][0] !== null, 'Error not triggered');
 
@@ -46,21 +46,21 @@ lab.experiment('SiteInfo', () => {
     });
 
     lab.test('should set the err argument to an error object message if the page does not exist', done => {
-      const result = new SiteInfo({ url: 'http://localhost:3070/jhkkjhdfg' }, (e, d) => {
+      const result = new UrlInfo({ url: 'http://localhost:3070/jhkkjhdfg' }, (e, d) => {
         Hoek.assert(typeof e === 'object', 'Error not returned');
         done();
       });
     });
 
     lab.test('should set err to null if the page exists.', done => {
-      const result = new SiteInfo({ url: 'http://localhost:3070' }, (e, d) => {
+      const result = new UrlInfo({ url: 'http://localhost:3070' }, (e, d) => {
         Hoek.assert(e === null, 'Error returned');
         done();
       });
     });
 
     lab.test('should have the correct keys in the return data object', done => {
-      const result = new SiteInfo({ url: 'http://localhost:3070' }, (e, d) => {
+      const result = new UrlInfo({ url: 'http://localhost:3070' }, (e, d) => {
         Hoek.assert(e === null, 'Error returned');
         Hoek.assert(typeof d === 'object', 'Data not returned');
         const keys = Object.keys(d);
@@ -70,7 +70,7 @@ lab.experiment('SiteInfo', () => {
     });
 
     lab.test('should find the description of the meta tag', done => {
-      const result = new SiteInfo({ url: 'http://localhost:3070' }, (e, d) => {
+      const result = new UrlInfo({ url: 'http://localhost:3070' }, (e, d) => {
         Hoek.assert(e === null, 'Error returned');
 
         Hoek.assert(d.description === 'This is a meta description.');
@@ -79,7 +79,7 @@ lab.experiment('SiteInfo', () => {
     });
 
     lab.test('should prefix images with the correct TLD URL', done => {
-      const result = new SiteInfo({ url: 'http://localhost:3070/subfolder/test_2.html' }, (e, d) => {
+      const result = new UrlInfo({ url: 'http://localhost:3070/subfolder/test_2.html' }, (e, d) => {
         Hoek.assert(e === null, 'Error returned');
 
         const tldImage = d.images[0];
@@ -99,7 +99,7 @@ lab.experiment('SiteInfo', () => {
     // TODO: Test basic parser fallback
     // TODO: Test invalid video id (private or removed video)
     lab.test.skip('should parse a youtube url correctly', done => {
-      const result = new SiteInfo({
+      const result = new UrlInfo({
         url: 'https://www.youtube.com/watch?v=dK2b4CbICYo',
         youtube: {
           key: 'AIzaSyDIsWi2OcnBSHctD6XfD0kwsyNa39G0ON4'
@@ -112,7 +112,7 @@ lab.experiment('SiteInfo', () => {
     });
 
     lab.test.skip('should parse a short youtube url correctly', done => {
-      const result = new SiteInfo({
+      const result = new UrlInfo({
         url: 'http://youtu.be/dK2b4CbICYo',
         youtube: {
           key: 'AIzaSyDIsWi2OcnBSHctD6XfD0kwsyNa39G0ON4'
@@ -129,7 +129,7 @@ lab.experiment('SiteInfo', () => {
     // TODO: Test fallback parser
     // TODO: Test tweet not found
     lab.test.skip('should parse a twitter url correctly', done => {
-      const result = new SiteInfo({
+      const result = new UrlInfo({
         url: 'https://twitter.com/LaughingSquid/status/702524296065847296',
         twitter: {
           key: 'PPswHRM94UNBlNxpRzQd1NZG5',
@@ -148,7 +148,7 @@ lab.experiment('SiteInfo', () => {
     // TODO: Test fallback parser
     // TODO: Test post not found
     lab.test.skip('should parse a facebook post url correctly', done => {
-      const result = new SiteInfo({
+      const result = new UrlInfo({
         url: 'https://www.facebook.com/Bones/posts/10154050815309497',
         facebook: {
           token: '193676364331885|TDKyNF1xWb3uXlxnH2NxxgXCODQ'
@@ -166,7 +166,7 @@ lab.experiment('SiteInfo', () => {
     // TODO: Test post not found
     // TODO: Test video post
     lab.test.skip('should parse an instagram post url correctly', done => {
-      const result = new SiteInfo({
+      const result = new UrlInfo({
         url: 'https://www.instagram.com/p/dpbIsZhOvT/',
         instagram: {
           token: '373385313.01658df.cb6eca695b8346dfb82d2b1bafd8ac38'
@@ -184,7 +184,7 @@ lab.experiment('SiteInfo', () => {
     // TODO: Test post not found
     // TODO: Test channel video page
     lab.test.skip('should parse a vimeo url correctly', done => {
-      const result = new SiteInfo({
+      const result = new UrlInfo({
         url: 'https://vimeo.com/156455111'
       }, (e, d) => {
         Hoek.assert(e === null, 'Error returned');

@@ -2,7 +2,7 @@
 
 'use strict';
 
-const siteinfo = require('../');
+const urlinfo = require('../');
 const url = process.argv[2];
 
 if (!url) {
@@ -10,7 +10,7 @@ if (!url) {
   process.exit(1);
 }
 
-new SiteInfo(url,
+new UrlInfo(url,
    function(err, data) {
      if(err !== null)
      {

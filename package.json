@@ -1,5 +1,5 @@
 {
-  "name": "siteinfo",
+  "name": "urlinfo",
   "version": "0.1.2",
   "description": "A tool for grabbing info about a particular URL",
   "main": "index.js",
@@ -13,7 +13,7 @@
     "meta",
     "og"
   ],
-  "repository": "https://github.com/firstandthird/siteinfo",
+  "repository": "https://github.com/firstandthird/urlinfo",
   "author": "First+Third",
   "license": "MIT",
   "dependencies": {
@@ -32,6 +32,6 @@
     "sinon": "^1.12.2"
   },
   "bin": {
-    "siteinfo": "bin/cli.js"
+    "urlinfo": "bin/cli.js"
   }
 }
