@@ -1,6 +1,6 @@
 {
   "name": "urlinfo",
-  "version": "0.1.2",
+  "version": "1.0.0",
   "description": "A tool for grabbing info about a particular URL",
   "main": "index.js",
   "scripts": {

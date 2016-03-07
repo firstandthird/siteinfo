@@ -9,7 +9,6 @@ Use the module by requiring it into your scope, then sending the url, and the ca
 
 ```javascript
 var UrlInfo = require('urlinfo');
-new UrlInfo({
-  url: 'https://google.com'
-}, cb);
+var urlinfo = new UrlInfo(options);
+urlinfo.parse('http://google.com', (err, data) = {});
 ```
