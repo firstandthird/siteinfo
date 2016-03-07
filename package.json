@@ -1,28 +1,37 @@
 {
-  "name": "siteinfo",
+  "name": "urlinfo",
   "version": "0.1.2",
   "description": "A tool for grabbing info about a particular URL",
-  "main": "siteinfo.js",
+  "main": "index.js",
   "scripts": {
-    "test": "mocha",
-    "jscs": "jscs -c node_modules/ft-jscs/jscs.json siteinfo.js"
+    "test": "lab -t 100 -a hoek -v",
+    "test-travis": "lab -r lcov | ./node_modules/.bin/coveralls"
   },
-  "repository": "https://github.com/firstandthird/siteinfo",
-  "author": "Eric Willis",
+  "keywords": [
+    "site",
+    "info",
+    "meta",
+    "og"
+  ],
+  "repository": "https://github.com/firstandthird/urlinfo",
+  "author": "First+Third",
   "license": "MIT",
   "dependencies": {
-    "cheerio": "^0.18.0",
-    "request": "^2.51.0",
-    "tough-cookie": "^0.12.1"
+    "cheerio": "^0.20.0",
+    "hoek": "^3.0.4",
+    "request": "^2.69.0"
   },
   "devDependencies": {
-    "expect": "^1.3.0",
-    "ft-jscs": "^1.0.0",
-    "jscs": "^1.9.0",
-    "mocha": "^2.1.0",
+    "coveralls": "^2.11.6",
+    "eslint": "^2.2.0",
+    "eslint-config-airbnb": "^6.0.2",
+    "eslint-config-firstandthird": "^1.5.0",
+    "eslint-plugin-react": "^4.0.0",
+    "hoek": "^3.0.4",
+    "lab": "^9.1.0",
     "sinon": "^1.12.2"
   },
   "bin": {
-    "siteinfo": "bin/cli.js"
+    "urlinfo": "bin/cli.js"
   }
 }
