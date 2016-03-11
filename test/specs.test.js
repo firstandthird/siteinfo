@@ -1,4 +1,4 @@
-/* eslint max-len: 0, no-console: 0, no-unused-vars: 0 */
+/* eslint max-len: 0, no-console: 0, no-unused-vars: 0, strict: 0*/
 'use strict';
 
 const sinon = require('sinon');
@@ -132,7 +132,6 @@ lab.experiment('UrlInfo', () => {
 
   lab.experiment('Twitter', () => {
     // TODO: Test fallback parser
-    // TODO: Test tweet not found
     lab.test('should parse a twitter url correctly', done => {
       const urlinfo = new UrlInfo({
         twitter: {
@@ -143,6 +142,19 @@ lab.experiment('UrlInfo', () => {
       const result = urlinfo.parse('https://twitter.com/LaughingSquid/status/702524296065847296', (e, d) => {
         Hoek.assert(e === null, 'Error returned');
         Hoek.assert(d.parser === 'twitter', 'Twitter parser not used');
+        done();
+      });
+    });
+    lab.test('should error on tweet not found', done => {
+      const urlinfo = new UrlInfo({
+        twitter: {
+          key: 'PPswHRM94UNBlNxpRzQd1NZG5',
+          secret: '8CTYTayeFOdaqZ3lslGgY6DSXO7Q98zEcGO0KVxEQuuRCNfrxW'
+        }
+      });
+      const result = urlinfo.parse('https://twitter.com/greg_allen/status/69535205348155564', (e, d) => {
+        Hoek.assert(d === undefined, 'Data returned');
+        Hoek.assert(typeof e === 'object', 'Non standard error');
         done();
       });
     });
@@ -168,7 +180,6 @@ lab.experiment('UrlInfo', () => {
 
   lab.experiment('Instagram', () => {
     // TODO: Test fallback parser
-    // TODO: Test post not found
     // TODO: Test video post
     lab.test('should parse an instagram post url correctly', done => {
       const urlinfo = new UrlInfo({
@@ -179,6 +190,19 @@ lab.experiment('UrlInfo', () => {
       const result = urlinfo.parse('https://www.instagram.com/p/dpbIsZhOvT/', (e, d) => {
         Hoek.assert(e === null, 'Error returned');
         Hoek.assert(d.parser === 'instagram', 'Instagram parser not used');
+        done();
+      });
+    });
+
+    lab.test('should throw error on api failure', done => {
+      const urlinfo = new UrlInfo({
+        instagram: {
+          token: '373385313.01658df.cb6eca695b8346dfb82d2b1bafd8ac38'
+        }
+      });
+      const result = urlinfo.parse('https://www.instagram.com/p/BByOgmhpZIs/', (e, d) => {
+        Hoek.assert(d === undefined, 'Data returned');
+        Hoek.assert(typeof e === 'object', 'Non standard error');
         done();
       });
     });
