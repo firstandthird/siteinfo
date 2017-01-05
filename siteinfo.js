@@ -125,7 +125,7 @@ var SiteInfo = function(url, cb) {
     } else {
       // Now where are we going to find an image?
       var firstImage = images.get(0);
-      if (firstImage !== undefined ) {
+      if (firstImage !== undefined && $(firstImage).attr('src') !== undefined) {
         data.mainImage = absPath( $(firstImage).attr('src') );
       }
     }
