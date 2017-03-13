@@ -200,7 +200,7 @@ lab.experiment('UrlInfo', () => {
           token: '373385313.01658df.cb6eca695b8346dfb82d2b1bafd8ac38'
         }
       });
-      const result = urlinfo.parse('https://www.instagram.com/p/BByOgmhpZIs/', (e, d) => {
+      const result = urlinfo.parse('https://www.instagram.com/p/BByOgmhpZ44/', (e, d) => {
         Hoek.assert(d === undefined, 'Data returned');
         Hoek.assert(typeof e === 'object', 'Non standard error');
         done();
