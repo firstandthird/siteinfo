@@ -18,8 +18,8 @@
   "license": "MIT",
   "dependencies": {
     "cheerio": "^0.20.0",
-    "hoek": "^3.0.4",
-    "request": "^2.69.0"
+    "hoek": "^5.0.2",
+    "wreck": "^14.0.2"
   },
   "devDependencies": {
     "coveralls": "^2.11.6",
